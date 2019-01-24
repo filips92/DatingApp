@@ -16,12 +16,13 @@ export class MessagesResolver implements Resolve<Message[]> {
     constructor(
         private userService: UserService,
         private router: Router,
-        private auth: AuthService,
+        private authService: AuthService,
         private alertify: AlertifyService
     ) {}
 
     resolve(route: ActivatedRouteSnapshot): Observable<Message[]> {
-        return this.userService.getMessages(this.auth.decodedToken.nameid, this.pageNumber, this.pageSize, this.messageContainer).pipe(
+        return this.userService.getMessages(this.authService.decodedToken.nameid, this.pageNumber, this.pageSize, this.messageContainer)
+        .pipe(
             catchError(error => {
                 this.alertify.error('Problem retrieving messages');
                 this.router.navigate(['/home']);
